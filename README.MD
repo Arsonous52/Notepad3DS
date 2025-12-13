@@ -31,8 +31,6 @@ The bottom screen displays instructions, file information and any additional inf
 
 When running Notepad3DS, you will start in the `/3ds` directory. Use `../` to access higher levels in the folder structure.
 
-> **NOTE:** Notepad3DS can open and save files in existing directories but **cannot create new directories.** Saving a file to a non-existent directory will be **unsuccessful**.
+> **!NOTE** Notepad3DS can open and save files in existing directories but **cannot create new directories.** Saving a file to a non-existent directory will be **unsuccessful**.
 
-> **NOTE:** Each line can hold a maximum of 1024 characters when edited. Lines over 1024 characters **WILL** be truncated, with no way of undoing this.
-
-## Installation
+> **!NOTE** Each line can hold a maximum of 1024 characters when edited. Lines over 1024 characters **WILL** be truncated, with no way of undoing this.
