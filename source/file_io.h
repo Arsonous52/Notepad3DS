@@ -1,11 +1,12 @@
 #pragma once
-#include <string>
-#include "file.h"
-//Attempts to write contents of file to filename.
-//Returns false if failed
-bool write_to_file(std::string& filename, File& file);
+#include <fstream>
 
-//Attempts to open filename
-//Returns a new File
-//Will overwrite current File on failure OR success
+#include "file.h"
+
+// Attempts to write contents of file to filename.
+// Returns false if failed to write
+bool write_file(std::string& filename, File& file);
+
+// Attempts to open filename
+// Returns the opened File
 File open_file(std::string& filename);

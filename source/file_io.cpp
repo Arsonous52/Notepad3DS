@@ -1,40 +1,30 @@
-#include <fstream>
-#include <iostream>
 #include "file_io.h"
-bool write_to_file(std::string& filename, File& file) {
+
+bool write_file(std::string& filename, File& file) {
     std::ofstream new_file(filename);
 
-    for (auto iter = file.lines.begin(); iter != file.lines.end(); iter++) {
-        for (const auto& ch: *iter)
-            new_file << ch;
+    for (std::string line : file.lines) {
+        new_file << line;
+
+        if (&line == &file.lines.back()) { new_file << '\n'; } // Dont create new line if its the end of the file
     }
+    
     new_file.close();
-    if (new_file.bad())
-        return false;
-    return true;
+    return !new_file.bad();
 }
 
 File open_file(std::string& filename) {
-    std::ifstream file_open (filename);
+    std::ifstream file_open(filename);
     File file;
-    //Remove newline at start
-    file.lines.pop_front();
+    file.read_success = false;
+    
     if (file_open.is_open()) {
         std::string line;
-        while (getline(file_open, line)) {
-            std::vector<char> line_vec;
-            for (const auto& ch : line)
-                line_vec.push_back(ch);
-            file.add_line(line_vec);
-        }
-        //If the last line in the file doesn't begin with a newline
-        if (*file.lines.back().begin() != '\n') {
-            file.lines.push_back(std::vector<char> {'\n'});
+        while (std::getline(file_open, line)) {
+            file.add_line(line);
         }
         file.read_success = true;
         file_open.close();
-    } else {
-        file.read_success = false;
     }
     return file;
 }

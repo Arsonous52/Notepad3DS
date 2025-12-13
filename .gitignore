@@ -1,5 +1,7 @@
-*.swp
-build/
+.gitignore
+.vscode
+build
 *.3dsx
 *.elf
 *.smdh
+*.lst

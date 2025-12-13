@@ -1,49 +1,34 @@
 #include "file.h"
-#include <algorithm>
 
-#include <string.h>
-void File::add_line(std::vector<char>& new_text) {
-    //Add a newline as 3ds keyboard doesn't
-    new_text.push_back('\n');
-    //Add line to end
-    lines.push_back(new_text);
+void File::add_line(const std::string& new_text) {
+    lines.back() = new_text;
+    lines.push_back("");
 }
 
-void File::edit_line(std::vector<char>& new_text, unsigned int line) {
-    //Add a newline as 3ds keyboard doesn't
-    new_text.push_back('\n');
-    auto line_iter = lines.begin();
-    if (line > 0)
-        advance(line_iter, line);
-    //Delete current line
-    line_iter = lines.erase(line_iter);
-    //Insert new_text
-    lines.insert(line_iter, new_text);
-    
-
+void File::edit_line(std::string& new_text, int line) {
+    lines[line] = new_text;
 }
 
-int File::find(const char* search_term) {
+// Eventually i want to add support for deleting lines
+void File::delete_line(int line) {
+    auto line_iter = lines.begin() + line;
+
+    line_iter = lines.erase(line_iter); // Delete line
+}
+
+std::vector<int> File::find(std::string search_term) {
+
+    std::vector<int> results;
+
     int line_number = 0;
-    if (search_term[0] == '\0')
-        return -1;
-    for(auto line : this->lines) {
-        auto it = std::search(line.begin(), line.end(), search_term, search_term + strlen(search_term));
-        if (it != line.end())
-            return line_number;
+    if (search_term.empty())
+        return results; // Early return if search term is null
+
+    for(auto& line : this->lines) {
+        size_t pos = line.find(search_term);
+        if (pos != std::string::npos)
+            results.push_back(line_number); // Add the line number to the results vector
         line_number++;
-        
     }
-
-    return -1;
-
-}
-
-std::vector<char> char_arr_to_vector(char* arr) { 
-    std::vector<char> text;
-    while(*arr != '\0') {
-        text.push_back(*arr);
-        arr++;
-    }
-    return text;
+    return results;
 }
