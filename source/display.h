@@ -16,8 +16,6 @@
 #define LOG_LINE "\x1b[7;0H"
 #define INSTRUCTION_LINE "\x1b[11;0H"
 
-#define EXTENDED_CONTENT_LINE "\x1b[24;0H"
-
 #define DEFAULT_TEXT_COLOUR "\x1b[0m" // Black BG
 #define SELECTED_TEXT_COLOUR "\x1b[47;30m" // White BG
 

@@ -94,8 +94,6 @@ void update_screen(File& file, int current_line) {
     print_current_line(current_line);
     print_current_directory(file_name);
 
-    std::cout << EXTENDED_CONTENT_LINE << file.lines.at(current_line);
-
     consoleSelect(&topScreen);
     clear_screen();
     
