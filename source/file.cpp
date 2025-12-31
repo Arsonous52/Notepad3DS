@@ -5,12 +5,16 @@ void File::add_line(const std::string& new_text) {
     lines.push_back("");
 }
 
-void File::edit_line(std::string& new_text, int line) {
+void File::edit_line(std::string& new_text, int& line) {
     lines[line] = new_text;
 }
 
+void File::insert_line(int& line) {
+    lines.insert(lines.begin() + line, "");
+}
+
 // Eventually i want to add support for deleting lines
-void File::delete_line(int line) {
+void File::delete_line(int& line) {
     auto line_iter = lines.begin() + line;
 
     line_iter = lines.erase(line_iter); // Delete line

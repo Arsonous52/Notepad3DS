@@ -5,8 +5,7 @@ bool write_file(std::string& filename, File& file) {
 
     for (std::string line : file.lines) {
         new_file << line;
-
-        if (&line == &file.lines.back()) { new_file << '\n'; } // Dont create new line if its the end of the file
+        if (line != file.lines.back()) { new_file << '\n'; } // Dont create new line if its the end of the file
     }
     
     new_file.close();

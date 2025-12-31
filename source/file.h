@@ -13,9 +13,11 @@ struct File {
 
     void add_line(const std::string& new_text);
 
-    void edit_line(std::string& new_text, int line);
+    void edit_line(std::string& new_text, int& line);
 
-    void delete_line(int line);
+    void insert_line(int& line);
+
+    void delete_line(int& line);
 
     std::vector<int> find(std::string search_term);
 

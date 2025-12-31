@@ -21,12 +21,19 @@
 
 #define FULL_CLEAR "\x1b[2K" // Clears entire line
 
+enum Pages {
+    EDIT_PAGE,
+    FILE_PAGE,
+    SEARCH_PAGE
+};
+
 extern PrintConsole topScreen, bottomScreen; 
 extern int scroll;
 extern bool show_line_numbers;
 extern std::string file_name;
+extern Pages page;
 
-void clear_screen(); // Clear entire top screen
+void clear_screen(); // Clear entire screen
 
 void clear_line(std::string line); // Clear singular line
 

@@ -1,7 +1,6 @@
 #include "display.h"
 
 void clear_screen() {
-    consoleSelect(&topScreen);
     consoleClear();
     std::cout << SCREEN_START_POINT; // Cursor to top left
 }
@@ -22,8 +21,10 @@ void print_current_line(int current_line) {
 }
 
 void print_current_directory(std::string filename) {
+    consoleSelect(&bottomScreen);
     clear_line(CURRENT_DIRECTORY_LINE);
-    std::cout << "Current file: " << filename;
+    std::string name = !filename.empty() ? filename : "(nothing)";
+    std::cout << "Current file: " << name;
 }
 
 void print_log(std::string message) {
@@ -35,37 +36,43 @@ void print_log(std::string message) {
 void print_instructions() {
     consoleSelect(&bottomScreen);
     std::cout << INSTRUCTION_LINE;
-    std::cout << "DPad/CPad: move up/down\n\n";
-	std::cout << "A: edit current line\n";
-	std::cout << "B: new file\n";
-	std::cout << "X: save file\n";
-	std::cout << "Y: open file\n\n";
-    std::cout << "R: search file\n";
-    std::cout << "L: jump to start/end with up/down\n\n";
-    std::cout << "SELECT: toggle line numbers\n";
-	std::cout << "START: exit Notepad3DS\n";
-    /*
-    I plan on eventually changing buttons to this:
-    
-    [Universal]
-    L: Jump to Start/End
-    SELECT: Toggle Line Numbers
-    START: Exit Notepad3DS
+    for (int i = 0; i < 12; i++) { // 14 == amount of lines that make up the instructions
+        std::cout << FULL_CLEAR << '\n';
+    }
+    if (page == SEARCH_PAGE) {
+        std::cout <<
+        INSTRUCTION_LINE <<
+        "[Search Mode]\n\n" <<
+        "B: Exit Search Mode\n\n" <<
+        "R: Next Match\n" <<
+        "L: Previous Match\n";
+        return;
+    }
+    std::cout <<
+    INSTRUCTION_LINE <<
+    (page == EDIT_PAGE ? "[Edit Mode]\n\n" : "[File Mode]\n\n") <<
+    "DPad/CPad: move up/down\n\n";
 
-    [Edit Mode]
-    A: Edit Line
-    B: Delete Line
-    Y: Insert Line Above
-    X: Search
-    R: Switch to File Mode
-
-    [File Mode]
-    A: Save File
-    B: New File
-    X: Save As
-    Y: Open File
-    R: Switch to Edit Mode
-    */
+    // Face buttons
+    if (page == EDIT_PAGE) {
+        std::cout <<
+        "A: Edit Line\n" <<
+        "B: Delete Line\n" <<
+        "X: Insert Line Above\n" <<
+        "Y: Search\n\n";
+    }
+    else {
+        std::cout << 
+        "A: Open File\n" <<
+        "B: New File\n" <<
+        "X: Save\n" <<
+        "Y: Save As\n\n";
+    }
+    std::cout <<
+    "R: Switch Editing Mode\n" <<
+    "L: Jump to Start/End\n\n" <<
+    "SELECT: Toggle Line Numbers\n" <<
+    "START: Exit Notepad3DS\n";
 }
 
 void print_text(std::string str, int count, int current_line) {
@@ -92,11 +99,9 @@ void print_text(std::string str, int count, int current_line) {
 void update_screen(File& file, int current_line) {
     consoleSelect(&bottomScreen);
     print_current_line(current_line);
-    print_current_directory(file_name);
 
     consoleSelect(&topScreen);
     clear_screen();
-    
     auto iter = file.lines.begin() + scroll;
     for (int line = 0; iter != file.lines.end() && line < MAX_LINES; line++) {
         print_text(*iter, line, current_line - scroll);
